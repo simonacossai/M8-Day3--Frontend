@@ -1,7 +1,12 @@
 import React from "react";
+import { Link } from 'react-router-dom'
 import "./styles.scss";
+import { withRouter } from "react-router-dom";
+
 class ArticleItemDetails extends React.Component {
+
   render() {
+console.log(this.props)
     return (
       <div className={"pr-3"}>
         <div className={"d-flex align-center mb-2"}>
@@ -20,7 +25,6 @@ class ArticleItemDetails extends React.Component {
           </span>
   }
         </div>
-        <a href="/">
           {this.props.article && 
           <span
             className={"heading"}
@@ -28,11 +32,12 @@ class ArticleItemDetails extends React.Component {
               fontSize: this.props.headingFont === "small" ? "16px" : "22px",
               lineHeight: this.props.headingFont === "small" ? "20px" : "28px",
             }}
+            onClick={() => this.props.article && this.props.history.push('/read/' + this.props.article._id)}
           >
-            {this.props.article.headLine}
+            {this.props.article.headLine} 
           </span>
   }
-        </a>
+  
 
         {this.props.article && (
           <div className={"subheading"}>
@@ -62,4 +67,4 @@ class ArticleItemDetails extends React.Component {
   }
 }
 
-export default ArticleItemDetails;
+export default withRouter(ArticleItemDetails);

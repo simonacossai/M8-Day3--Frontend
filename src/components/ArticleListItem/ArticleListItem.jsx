@@ -4,8 +4,8 @@ import "./styles.scss";
 class ArticleListItem extends React.Component {
 
   render() {
+
     return (
-      
       <div
         className={`w-100 d-flex mb-auto justify-content-between align-start  pb-4 ${
           this.props.articleImg === "top" && "flex-column-reverse"

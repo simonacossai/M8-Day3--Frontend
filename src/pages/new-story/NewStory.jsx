@@ -8,29 +8,93 @@ import CategoryPicker from "../../components/CategoryPicker";
 
 export default class NewStory extends Component {
   state = {
-    html: "",
+      author: "Simona",
+      headLine: "",
+      subHead: "aaaaaaaa",
+      content: "",
+      category: {
+      name: "",
+      img: ""
+      },
+      author: {
+      name: "Simona Cossai",
+      img: "string"
+      },
+      cover: ""
   };
   editor = React.createRef();
-  onChange = (html) => {
-    this.setState({ html })
-    console.log(html)
-  };
+  
   onKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       this.editor && this.editor.current.focus();
+      console.log(this.editor)
+      console.log(this.editor.current.focus())
     }
   };
+
+  handleTopic(topic){
+    this.setState({
+      category: {
+        name: topic.name,
+        img: topic.img
+      }})
+
+    console.log(this.state.category.name)
+    console.log(this.state.category.img)
+  }
+  handleTitle=(e)=>{
+   this.setState({headLine: e.target.value})
+  }
+  handleContent=(e)=>{
+    this.setState({content: this.editor.current.editingArea.innerText})
+  }
+  handleCover=(e)=>{
+    this.setState({cover: e.target.value})
+  }
+  postArticles =async()=>{
+    let post={
+      category: this.state.category,
+      headLine: this.state.headLine,
+      subHead: this.state.subHead,
+      content: this.state.content,
+      cover: this.state.cover,
+      author: {
+        name: "Simona Cossai",
+        img:
+          "https://wips.plug.it/cips/tecnologia/cms/2017/06/meme.jpg?w=738&a=c&h=415",
+      },
+    }
+    console.log(post)
+    try {
+      let response = await fetch(`http://localhost:3001/articles`,
+      {
+          method: 'POST',
+          body: JSON.stringify(post),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+      if (response.ok) {
+         alert("PUBLISHED")
+      } else {
+          alert("an error accourred")
+      }
+  } catch (err) {
+      console.log(err);
+  }
+     }
+  
   render() {
-    const { html } = this.state;
     return (
       <Container className="new-story-container" expand="md">
         <div className="category-container">
-        <CategoryPicker onChange={(topic)=>{console.log(topic)}} />
+        <CategoryPicker onChange={(topic)=> this.handleTopic(topic)} />
         </div>
         <input
           onKeyDown={this.onKeyDown}
           placeholder="Title"
+          onChange={(e)=> this.handleTitle(e)}
           className="article-title-input"
         />
 
@@ -38,18 +102,17 @@ export default class NewStory extends Component {
           modules={NewStory.modules}
           formats={NewStory.formats}
           ref={this.editor}
+          onChange={(e)=> this.handleContent(e)}
           theme="bubble"
-          value={html}
-          onChange={this.onChange}
           placeholder="Tell your story..."
         />
         <input
-          onKeyDown={this.onKeyDown}
+          onChange={(e)=> this.handleCover(e)}
           placeholder="Cover link e.g : https://picsum.photos/800"
           className="article-cover-input"
         />
        
-        <Button variant="success" className="post-btn">
+        <Button variant="success" className="post-btn" onClick={()=>this.postArticles()}>
           Post
         </Button>
       </Container>

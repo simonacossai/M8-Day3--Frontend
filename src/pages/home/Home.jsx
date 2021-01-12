@@ -24,7 +24,8 @@ export default class Home extends Component {
       if (response.ok) {
           let articles = await response.json()
           this.setState({articles})
-          console.log(articles[0])
+          console.log(this.props)
+
       } else {
           alert("an error accourred")
       }
@@ -52,7 +53,8 @@ export default class Home extends Component {
                 articleImg={"top"}
                 headingFont={"large"}
                 subheading
-              />
+                {...this.props} 
+          />
             </Col>
 
             <Col className={"flex-column w-100"}>
@@ -61,6 +63,7 @@ export default class Home extends Component {
                   articleImg={"left"}
                   headingFont={"small"}
                   article={article}
+                  {...this.props} 
                 />
               ))}
             </Col>
@@ -79,6 +82,7 @@ export default class Home extends Component {
                   headingFont={"large"}
                   subheading
                   article={article}
+                  {...this.props} 
                 />
               ))
               }
@@ -94,7 +98,7 @@ export default class Home extends Component {
                   <span className={"ml-2"}>READING LIST </span>
                 </div>
                 {this.state.articles.slice(0, 3).map((article) => (
-                  <ArticleListItem headingFont={"small"} article={article} />
+                  <ArticleListItem headingFont={"small"} article={article} {...this.props} />
                 ))}
               </div>
               <Footer />
