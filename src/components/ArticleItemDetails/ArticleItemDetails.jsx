@@ -6,7 +6,6 @@ import { withRouter } from "react-router-dom";
 class ArticleItemDetails extends React.Component {
 
   render() {
-console.log(this.props)
     return (
       <div className={"pr-3"}>
         <div className={"d-flex align-center mb-2"}>

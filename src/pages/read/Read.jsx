@@ -37,7 +37,7 @@ class Read extends Component {
       <Container className="article-container">
         {this.state.article &&
           <>
-          <h1>{this.state.article.title}</h1>
+          <h1>{this.state.article.headLine}</h1>
           <Row style={{ marginTop: 20, marginBottom: 20 }}>
             <Col xs={1}>
        <Image
