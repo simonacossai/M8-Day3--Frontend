@@ -5,17 +5,42 @@ import ArticleListItem from "../../components/ArticleListItem/ArticleListItem";
 import Footer from "../../components/Footer/Footer";
 import PeopleList from "../../components/PeopleList/PeopleList";
 import TopicsToFollow from "../../components/TopicsToFollow/TopicsToFollow";
-import articles from "./articles.json";
+//import articles from "./articles.json";
 import "./styles.scss";
 
 
 export default class Home extends Component {
+  
   state = {
-    articles: articles,
+    articles: [],
   };
+  
+  fetchArticles =async()=>{
+    try {
+      let response = await fetch(`http://localhost:3001/articles`,
+      {
+          method: 'GET',
+      })
+      if (response.ok) {
+          let articles = await response.json()
+          this.setState({articles})
+          console.log(articles[0])
+      } else {
+          alert("an error accourred")
+      }
+  } catch (err) {
+      console.log(err);
+  }
+  }
+
+  componentDidMount(){
+    this.fetchArticles()
+  }
+
   render() {
     return (
       <div>
+        {this.state.articles &&
         <Container>
           <Row
             className={"row-cols-lg-3 pb-4"}
@@ -23,7 +48,7 @@ export default class Home extends Component {
           >
             <Col>
               <ArticleListItem
-                article={this.state.articles[0]}
+                article={this.state.articles && this.state.articles[0]}
                 articleImg={"top"}
                 headingFont={"large"}
                 subheading
@@ -31,7 +56,7 @@ export default class Home extends Component {
             </Col>
 
             <Col className={"flex-column w-100"}>
-              {this.state.articles.slice(1, 5).map((article) => (
+              {this.state.articles.slice(0,3).map((article) => (
                 <ArticleListItem
                   articleImg={"left"}
                   headingFont={"small"}
@@ -48,14 +73,15 @@ export default class Home extends Component {
           </Row>
           <Row className={"py-4 mt-4"}>
             <Col className={"col-lg-8 pr-5 pl-2"}>
-              {this.state.articles.slice(6).map((article) => (
+              {this.state.articles.map((article) => (
                 <ArticleListItem
                   articleImg={"left"}
                   headingFont={"large"}
                   subheading
                   article={article}
                 />
-              ))}
+              ))
+              }
             </Col>
             <Col className={"col-lg-4 "}>
               <div
@@ -75,7 +101,9 @@ export default class Home extends Component {
             </Col>
           </Row>
         </Container>
+  }
       </div>
+                
     );
   }
 }

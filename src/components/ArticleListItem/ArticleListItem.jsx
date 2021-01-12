@@ -2,15 +2,17 @@ import React from "react";
 import ArticleItemDetails from "../ArticleItemDetails/ArticleItemDetails";
 import "./styles.scss";
 class ArticleListItem extends React.Component {
+
   render() {
     return (
+      
       <div
         className={`w-100 d-flex mb-auto justify-content-between align-start  pb-4 ${
           this.props.articleImg === "top" && "flex-column-reverse"
         }`}
       >
         <ArticleItemDetails {...this.props} />
-        {this.props.articleImg && (
+        {this.props.article && (
           <a href="/">
             <img
             alt="cover"

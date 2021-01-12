@@ -12,14 +12,16 @@ class ArticleItemDetails extends React.Component {
               "https://miro.medium.com/fit/c/20/20/1*xF11-TSkpJSCgLc75f-DFw.jpeg"
             }
           />
-
+{this.props.article &&
           <span className={"author"}>
             <a href="/">
-              <b>{this.props.article.author} </b> in <b>Better Advice</b>
+              <b>{this.props.article.author.name} </b> in <b>Better Advice</b>
             </a>
           </span>
+  }
         </div>
         <a href="/">
+          {this.props.article && 
           <span
             className={"heading"}
             style={{
@@ -29,9 +31,10 @@ class ArticleItemDetails extends React.Component {
           >
             {this.props.article.headLine}
           </span>
+  }
         </a>
 
-        {this.props.subheading && (
+        {this.props.article && (
           <div className={"subheading"}>
             <p>
               <a href="/">{this.props.article.subHead}</a>
