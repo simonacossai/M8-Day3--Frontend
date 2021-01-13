@@ -68,7 +68,7 @@ class Read extends Component {
             </Col>
           </Row>
        <p>{this.state.article.content}</p>
-          <Reactions/>
+          <Reactions id={this.props.match.params.slug}/>
 </>
         }
 

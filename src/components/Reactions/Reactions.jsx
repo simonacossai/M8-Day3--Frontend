@@ -1,9 +1,68 @@
-import React from "react";
+import React, {Component} from "react";
 import { IoLogoTwitter, IoLogoLinkedin, IoLogoFacebook } from "react-icons/io";
 import { IoBookmarkOutline } from "react-icons/io5";
 import { FaRegComment } from "react-icons/fa";
 import { Button } from "react-bootstrap";
-export default function Reactions() {
+import {ListGroup, ListGroupItem} from 'react-bootstrap';
+
+ class Reactions extends Component {
+   state={
+     user: "Blblb",
+     text:"",
+     reviews: "",
+     clicked: false,
+   }
+   handleReview(e){
+      this.setState({text: e.target.value}, ()=>console.log(this.state.text))
+   }
+   postReview =async()=>{
+   const body={
+      text: this.state.text,
+      user: this.state.user
+    }
+    try {
+      let response = await fetch(`http://localhost:3001/articles/${this.props.id}/reviews`,
+      {
+          method: 'POST',
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+      if (response.ok) {
+         alert("PUBLISHED")
+         this.getReviews()
+         this.setState({text: ""})
+      } else {
+          alert("an error accourred")
+      }
+  } catch (err) {
+      console.log(err);
+  }
+  }
+
+getReviews =async()=>{
+  try {
+    let response = await fetch(`http://localhost:3001/articles/${this.props.id}/reviews`,
+    {
+        method: 'GET',
+      })
+    if (response.ok) {
+       let reviews = await response.json();
+       this.setState({reviews})
+       console.log(reviews)
+    } else {
+        alert("an error accourred")
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  } 
+  componentDidMount(){
+    this.getReviews()
+  }
+
+  render(){
   return (
     <>
       <div
@@ -27,9 +86,10 @@ export default function Reactions() {
               fontSize: 24,
               marginLeft: "1em",
             }}
+            onClick={()=>this.setState({clicked: !this.state.clicked})}
           />
-          <span style={{ fontSize: 12, marginLeft: "0.5em" }}>
-            13 Responses
+          <span style={{ fontSize: 12, marginLeft: "0.5em" }} onClick={()=>this.setState({clicked: !this.state.clicked})}>
+            {this.state.reviews.length === 0 ? "No" : this.state.reviews.length} Responses
           </span>
         </div>
         <div style={{ fontSize: 24 }}>
@@ -39,12 +99,23 @@ export default function Reactions() {
           <IoBookmarkOutline />
         </div>
       </div>
-
+      {this.state.clicked===true &&
+        <ListGroup variant="flush" >
+      {
+        this.state.reviews && this.state.reviews.map((e)=> 
+        <ListGroup.Item className="d-block"><span className="text-black mr-4 d-block font-weight-bold">{e.user}</span>{e.text}</ListGroup.Item>
+        )
+      }
+      </ListGroup>
+    }
       <div style={{ marginTop: 50, marginBottom: 200 }}>
         <label>What are your thoughts?</label>
-        <textarea style={{ width: "100%", padding: 20 }} />
-        <Button variant="success">Send</Button>
+        <textarea style={{ width: "100%", padding: 20 }} onChange={(e)=>this.handleReview(e)} value={this.state.text}/>
+        <Button variant="success" onClick={()=>this.postReview()}>Send</Button>
       </div>
     </>
   );
+  }
 }
+
+export default Reactions
