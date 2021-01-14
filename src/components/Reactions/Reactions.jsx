@@ -4,10 +4,11 @@ import { IoBookmarkOutline } from "react-icons/io5";
 import { FaRegComment } from "react-icons/fa";
 import { Button } from "react-bootstrap";
 import {ListGroup, ListGroupItem} from 'react-bootstrap';
+import './Reactions.css'
 
  class Reactions extends Component {
    state={
-     user: "Blblb",
+     user: "John",
      text:"",
      reviews: "",
      clicked: false,
@@ -72,6 +73,7 @@ getReviews =async()=>{
           justifyContent: "space-between",
         }}
       >
+        
         <div style={{ display: "flex", alignItems: "center" }}>
           <svg width="33" height="33" viewBox="0 0 33 33" aria-label="clap">
             <path
@@ -79,6 +81,7 @@ getReviews =async()=>{
               fill-rule="evenodd"
             ></path>
           </svg>
+          
           <span style={{ fontSize: 12, marginLeft: "0.5em" }}>3.2K claps</span>
           <FaRegComment
             style={{
@@ -92,14 +95,25 @@ getReviews =async()=>{
             {this.state.reviews.length === 0 ? "No" : this.state.reviews.length} Responses
           </span>
         </div>
+        
         <div style={{ fontSize: 24 }}>
           <IoLogoTwitter />
           <IoLogoLinkedin />
           <IoLogoFacebook />
           <IoBookmarkOutline />
         </div>
+        
       </div>
-      {this.state.clicked===true &&
+     
+     
+     
+      <div style={{ marginTop: 50, marginBottom: 200 }}>
+        <label>What are your thoughts?</label>
+        <textarea style={{ width: "100%", padding: 20 }} onChange={(e)=>this.handleReview(e)} value={this.state.text}/>
+        <Button variant="success" onClick={()=>this.postReview()}>Send</Button>
+      </div>
+     {this.state.clicked===true &&
+      <div className="comments">
         <ListGroup variant="flush" >
       {
         this.state.reviews && this.state.reviews.map((e)=> 
@@ -107,12 +121,8 @@ getReviews =async()=>{
         )
       }
       </ListGroup>
+    </div>
     }
-      <div style={{ marginTop: 50, marginBottom: 200 }}>
-        <label>What are your thoughts?</label>
-        <textarea style={{ width: "100%", padding: 20 }} onChange={(e)=>this.handleReview(e)} value={this.state.text}/>
-        <Button variant="success" onClick={()=>this.postReview()}>Send</Button>
-      </div>
     </>
   );
   }

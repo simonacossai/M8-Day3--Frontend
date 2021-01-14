@@ -33,7 +33,7 @@ class Read extends Component {
   }
   render() {
     return (
-
+<>
       <Container className="article-container">
         {this.state.article &&
           <>
@@ -73,7 +73,7 @@ class Read extends Component {
         }
 
       </Container>
-            
+         </>
     );
   }
 }
