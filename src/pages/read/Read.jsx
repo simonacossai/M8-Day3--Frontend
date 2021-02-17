@@ -12,15 +12,19 @@ class Read extends Component {
     article:""
   }
   fetchArticle =async()=>{
+    let token=  localStorage.getItem("token");
     try {
       let response = await fetch(`http://localhost:3001/articles/${this.props.match.params.slug}`,
       {
           method: 'GET',
+          headers: new Headers({
+            authtoken: `${token}`,
+          }),
       })
       if (response.ok) {
           let article = await response.json()
           this.setState({article})
-          console.log(article)
+          console.log(article.author[0].name,"aaa")
       } else {
           alert("an error accourred")
       }
@@ -42,12 +46,12 @@ class Read extends Component {
             <Col xs={1}>
        <Image
                 style={{ width: 50, height: 50 }}
-                src={this.state.article.author.img ?? "https://miro.medium.com/fit/c/96/96/1*xVwJ4C9D1sjrRc-sR_jO0w.jpeg"}
+                src={this.state.article.author[0].img ?? "https://miro.medium.com/fit/c/96/96/1*xVwJ4C9D1sjrRc-sR_jO0w.jpeg"}
                 roundedCircle
               />
             </Col>
             <Col>
-              {this.state.article.author.name}
+              {this.state.article.author[0].name ?? "Author"}
               <p>Sep 23, 2018 · 3 min read</p>
             </Col>
     

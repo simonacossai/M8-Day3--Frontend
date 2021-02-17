@@ -17,8 +17,8 @@ export default class NewStory extends Component {
       img: ""
       },
       author: {
-      name: "Simona Cossai",
-      img: "string"
+      name: "",
+      img: ""
       },
       cover: ""
   };
@@ -32,6 +32,25 @@ export default class NewStory extends Component {
       console.log(this.editor.current.focus())
     }
   };
+  getAuthor=async()=>{
+    let id=  localStorage.getItem("id");
+    let token=  localStorage.getItem("token");
+    try {
+      let response= await fetch("http://localhost:3001/users/"+ id,{
+        method: "GET",
+        headers: new Headers({
+          authtoken: `${token}`,
+        }),
+      });
+      if(response.ok){
+        let data=await response.json();
+        console.log(data)
+        return data
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   handleTopic(topic){
     this.setState({
@@ -53,6 +72,8 @@ export default class NewStory extends Component {
     this.setState({cover: e.target.value})
   }
   postArticles =async()=>{
+    let token=  localStorage.getItem("token");
+    let author= await this.getAuthor();
     let post={
       category: this.state.category,
       headLine: this.state.headLine,
@@ -60,9 +81,8 @@ export default class NewStory extends Component {
       content: this.state.content,
       cover: this.state.cover,
       author: {
-        name: "Simona Cossai",
-        img:
-          "https://wips.plug.it/cips/tecnologia/cms/2017/06/meme.jpg?w=738&a=c&h=415",
+        name: author.username,
+        img:author.image,
       },
     }
     console.log(post)
@@ -73,6 +93,7 @@ export default class NewStory extends Component {
           body: JSON.stringify(post),
           headers: {
             "Content-Type": "application/json",
+            authtoken: `${token}`,
           },
         })
       if (response.ok) {

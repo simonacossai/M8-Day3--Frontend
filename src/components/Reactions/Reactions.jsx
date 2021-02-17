@@ -8,7 +8,7 @@ import './Reactions.css'
 
  class Reactions extends Component {
    state={
-     user: "John",
+     user: "",
      text:"",
      reviews: "",
      clicked: false,
@@ -16,11 +16,33 @@ import './Reactions.css'
    handleReview(e){
       this.setState({text: e.target.value}, ()=>console.log(this.state.text))
    }
+   getAuthor=async()=>{
+    let id=  localStorage.getItem("id");
+    let token=  localStorage.getItem("token");
+    try {
+      let response= await fetch("http://localhost:3001/users/"+ id,{
+        method: "GET",
+        headers: new Headers({
+          authtoken: `${token}`,
+        }),
+      });
+      if(response.ok){
+        let data=await response.json();
+        console.log(data)
+        return data
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
    postReview =async()=>{
+    let author= await this.getAuthor();
    const body={
       text: this.state.text,
-      user: this.state.user
+      user: author.username
     }
+    let token=  localStorage.getItem("token");
     try {
       let response = await fetch(`http://localhost:3001/articles/${this.props.id}/reviews`,
       {
@@ -28,6 +50,7 @@ import './Reactions.css'
           body: JSON.stringify(body),
           headers: {
             "Content-Type": "application/json",
+             authtoken: `${token}`,
           },
         })
       if (response.ok) {
@@ -43,10 +66,14 @@ import './Reactions.css'
   }
 
 getReviews =async()=>{
+  let token=  localStorage.getItem("token");
   try {
     let response = await fetch(`http://localhost:3001/articles/${this.props.id}/reviews`,
     {
         method: 'GET',
+        headers: new Headers({
+          authtoken: `${token}`,
+        }),
       })
     if (response.ok) {
        let reviews = await response.json();

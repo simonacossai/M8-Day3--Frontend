@@ -16,10 +16,14 @@ export default class Home extends Component {
   };
   
   fetchArticles =async()=>{
+    let token=  localStorage.getItem("token");
     try {
       let response = await fetch(`http://localhost:3001/articles`,
       {
           method: 'GET',
+          headers: new Headers({
+            authtoken: `${token}`,
+          }),
       })
       if (response.ok) {
           let articles = await response.json()

@@ -1,0 +1,10 @@
+.RegistrationContainer{
+    background-color: #EEEEEE;
+    height: fit-content;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 40px;
+    text-align: left !important;
+    box-shadow: 3px 3px 20px rgba(104, 100, 100, 0.392);
+}

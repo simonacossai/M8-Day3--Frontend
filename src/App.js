@@ -8,9 +8,11 @@ import Read from "./pages/read/Read"
 import Search from "./pages/search/Search"
 import Stats from "./pages/stats"
 import Stories from "./pages/stories"
+import Login from './components/Login/Login';
+import Registration from './components/Registration/Registration';
 
 const routes = [
-  { path: "/", component: Home },
+  { path: "/home", component: Home },
   { path: "/new-story", component: NewStory },
   { path: "/topics", component: Topics },
   { path: "/read/:slug", component: Read },
@@ -23,6 +25,8 @@ function App() {
   return (
     <Router >
       <NavBar />
+      <Route path="/" exact render={(props) => <Login  {...props}/>} />
+      <Route path="/register" exact render={(props) => <Registration  {...props}/>} />
       {
         routes.map(({ path, component }) =>
           <Route exact path={path} component={component} />

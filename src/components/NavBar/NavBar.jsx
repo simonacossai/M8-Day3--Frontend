@@ -19,7 +19,7 @@ export default class NavBar extends Component {
     return (
       <Navbar  style={{paddingTop:24}}>
         <Container>
-          <Navbar.Brand as={Link} to="/">
+          <Navbar.Brand as={Link} to="/home">
             <img style={{ height: 54 }} alt="medium-logo" src={logo} />
           </Navbar.Brand>
           <h5 style={{ fontWeight: "bold", marginTop: "0.6em" }}>
